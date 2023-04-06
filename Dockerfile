@@ -1,9 +1,7 @@
 FROM alpine:latest
 
-RUN apk add --no-cache socat
+RUN apk add --no-cache iptables
 
-ENTRYPOINT ["socat"]
+CMD ["sh", "-c", "iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 91.107.139.147:443 && iptables -t nat -A PREROUTING -p tcp --dport 443 -j DNAT --to-destination 91.107.139.147:443 && iptables -t nat -A POSTROUTING -j MASQUERADE && exec /bin/sh"]
 
 EXPOSE 443
-
-CMD ["TCP-LISTEN:80,fork", "TCP-LISTEN:443,fork", "TCP:91.107.139.147:443"]
