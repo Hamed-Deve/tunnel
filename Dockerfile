@@ -2,6 +2,6 @@ FROM alpine:latest
 
 RUN apk add --no-cache socat
 
-EXPOSE 443
+ENTRYPOINT ["socat"]
 
-CMD socat TCP-LISTEN:127.0.0.1:443,fork UDP-LISTEN:127.0.0.1:443,fork,su=nobody,reuseaddr,reuseport TCP:91.107.139.147:443
+CMD ["TCP-LISTEN:80,fork", "TCP-LISTEN:443,fork", "TCP:91.107.139.147:443"]
